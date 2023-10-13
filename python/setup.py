@@ -23,6 +23,7 @@ def check_env_flag(name: str, default: str = "") -> bool:
 
 
 def get_build_type():
+    return "Debug"
     if check_env_flag("DEBUG"):
         return "Debug"
     elif check_env_flag("REL_WITH_DEB_INFO"):
@@ -280,6 +281,9 @@ class CMakeBuild(build_ext):
 
         env = os.environ.copy()
         cmake_dir = get_cmake_dir()
+        new_line = "\n"
+        print(f'Config Args {new_line.join(cmake_args)}')
+        print(f'Build Args {new_line.join(build_args)}')
         subprocess.check_call(["cmake", self.base_dir] + cmake_args, cwd=cmake_dir, env=env)
         subprocess.check_call(["cmake", "--build", "."] + build_args, cwd=cmake_dir)
         subprocess.check_call(["cmake", "--build", ".", "--target", "mlir-doc"], cwd=cmake_dir)
